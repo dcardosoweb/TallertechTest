@@ -8,6 +8,7 @@ import com.dksystem.tallertechtest.models.UiStateModel
 import com.dksystem.tallertechtest.repository.RepositoryServices
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 class WeatherViewModel(private val repositoryServices: RepositoryServices): ViewModel() {
 
@@ -16,17 +17,25 @@ class WeatherViewModel(private val repositoryServices: RepositoryServices): View
 
     private var searchJob: Job? = null
 
-    fun onClick(paramValue: String){
+    fun OnQueryChange(paramValue: String) {
         val query = paramValue.trim()
-        searchJob?.cancel()
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             _state.value = UiStateModel.Idle
             return
         }
+
+        searchJob?.cancel()
         searchJob = viewModelScope.launch {
+            delay(500)
             _state.value = UiStateModel.Loading
-            val result = repositoryServices.searchWeather(query)
-            _state.value = result?.let { UiStateModel.Success(it) } ?: UiStateModel.Error("Error")
+
+            try {
+                val result = repositoryServices.searchWeather(query)
+                _state.value =
+                    if (result == null) UiStateModel.Empty else UiStateModel.Success(result)
+            } catch (e: Exception) {
+                _state.value = UiStateModel.Error(e.message ?: "Unexpected error")
+            }
         }
     }
 }

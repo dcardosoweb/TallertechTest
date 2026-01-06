@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -48,22 +47,16 @@ fun WeatherScreen(
         ) {
             OutlinedTextField(
                 value = query,
-                onValueChange = { query = it }, // ✅ only updates local state
+                onValueChange = {
+                    query = it
+                    viewModel.OnQueryChange(it)
+                },
                 modifier = Modifier.weight(1f),
                 label = { Text("Search city") },
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.width(12.dp))
-
-            Button(
-                onClick = {
-                    viewModel.onClick(query)
-                },
-                enabled = query.trim().isNotEmpty()
-            ) {
-                Text("Search")
-            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
