@@ -22,11 +22,11 @@ class App : Application() {
         val client = NetworkConfig.okHttpClient()
 
         val geoApi = NetworkConfig
-            .retrofit("https://api.open-meteo.com/v1/", client)
+            .retrofit("https://geocoding-api.open-meteo.com/", client)
             .create(LocationApi::class.java)
 
         val weatherApi = NetworkConfig
-            .retrofit("https://api.open-meteo.com/v1/", client)
+            .retrofit("https://api.open-meteo.com/", client)
             .create(WeatherApi::class.java)
 
         weatherRepository = RepositoryServices(geoApi, weatherApi)

@@ -26,7 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dksystem.tallertechtest.models.UiStateModel
-import com.dksystem.tallertechtest.models.WeatherDto
+import com.dksystem.tallertechtest.models.WeatherResponse
 import com.dksystem.tallertechtest.viewModel.WeatherViewModel
 
 @Composable
@@ -93,16 +93,16 @@ fun WeatherScreen(
 }
 
 @Composable
-private fun WeatherResultCard(data: WeatherDto) {
+private fun WeatherResultCard(data: WeatherResponse) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "${data.temperature}°", style = MaterialTheme.typography.bodyLarge)
+            Text(text = "${data.current_weather?.temperature}°", style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = data.weathercode?.toString() ?: "N/A", style = MaterialTheme.typography.bodyMedium)
+            Text(text = data.current_weather?.toString() ?: "N/A", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
